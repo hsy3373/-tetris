@@ -1,5 +1,12 @@
 @charset "utf-8";
 
+:root {
+  --border-top: 4px solid rgb(255 255 255 / 83%);
+  --border-right: 4px solid rgb(255 255 255 / 50%);
+  --border-bottom: 4px solid rgb(0 0 0 / 22%);
+  --border-left: 4px solid rgb(203 203 203 / 50%);
+}
+
 * {
   box-sizing: border-box;
   margin: 0 auto;
@@ -12,12 +19,34 @@ body {
   overflow: hidden;
 }
 
+body {
+  background-image: url("../img/minigame.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 ul {
   list-style: none;
 }
 
-.Tetris_wrap {
-  text-align: center;
+.game-title-wrap {
+  height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-title-wrap > div {
+  font-size: larger;
+  font-weight: 900;
+  width: 17rem;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../img/라벨2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .gameStart {
@@ -51,16 +80,16 @@ ul {
 }
 
 .startBtn:hover ~ .b1 {
-  background-color: #f6395a;
+  background-color: #ff5572;
 }
 .startBtn:hover ~ .b2 {
-  background-color: #c0e218;
+  background-color: #d1f324;
 }
 .startBtn:hover ~ .b3 {
-  background-color: #33d8f5;
+  background-color: #48e4ff;
 }
 .startBtn:hover ~ .b4 {
-  background-color: #3e7aed;
+  background-color: #5490ff;
 }
 
 .startBtn:hover ~ div > span {
@@ -72,10 +101,10 @@ ul {
   width: 50%;
   height: 50%;
   line-height: 150px;
-  border-top: 12px solid rgba(240, 240, 240, 0.5);
-  border-right: 12px solid rgba(0, 0, 0, 0.3);
-  border-bottom: 12px solid rgba(0, 0, 0, 0.9);
-  border-left: 12px solid rgba(0, 0, 0, 0.1);
+  border-top: 10px solid rgba(240, 240, 240, 0.5);
+  border-right: 10px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 10px solid rgba(0, 0, 0, 0.6);
+  border-left: 10px solid rgba(0, 0, 0, 0.1);
   z-index: 10;
   transition: 0.3s ease;
 }
@@ -162,15 +191,108 @@ ul {
   color: #fff;
 }
 
-.tetris_board {
+.Tetris_wrap {
+  text-align: center;
+  display: flex;
+  height: calc(100vh - 6rem);
+  width: 100%;
+}
+
+.left-wrap {
+  width: 20%;
+  height: 100%;
+}
+
+.best-score {
+  color: black;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.best-score > div:nth-child(1) {
+  font-size: 1rem;
+  font-weight: 900;
   position: absolute;
-  top: 50%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
+.best-score > div:nth-child(2) {
+  font-size: 1.5rem;
+  font-weight: 900;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.best-score > img {
+  width: 100%;
+  height: 140px;
+}
+
+.ranking {
+  position: relative;
+  height: 50%;
+  margin-top: 60%;
+}
+
+.ranking > div:nth-child(1) {
+  font-size: 1rem;
+  font-weight: 900;
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.rank-box {
+  width: 80%;
+  height: 70%;
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  border: 1px solid rebeccapurple;
+}
+
+.ranking > img {
+  width: 90%;
+  height: 100%;
+}
+
+.score {
+  width: 20%;
+  height: 100%;
+}
+
+.tetris_board {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 450px;
+  height: 550px;
+
+  margin: auto;
+
+  position: relative;
+}
+
+.tetris_board > img {
+  width: 100%;
+  height: 100%;
+}
+
 .tetris_board > ul {
   width: fit-content;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .tetris_board > ul > li {
@@ -184,73 +306,78 @@ ul {
 .tetris_board > ul > li > ul > li {
   width: 50px;
   height: 50px;
-  outline: 1px solid #aaa;
+
+  outline: 1px solid rgba(38, 36, 44, 0.4);
 }
 
-.bar {
-  background: #f6395a;
-  border-top: 4px solid rgba(240, 240, 240, 0.5);
-  border-right: 4px solid rgba(0, 0, 0, 0.3);
-  border-bottom: 4px solid rgba(0, 0, 0, 0.9);
-  border-left: 4px solid rgba(0, 0, 0, 0.1);
+.tetris_board > ul > :nth-child(1) :nth-child(n + 4):nth-child(-n + 5) {
+  border-bottom: 2px solid red;
+}
+
+.one,
+.two,
+.three,
+.four,
+.five,
+.six,
+.seven,
+.eight,
+.nine,
+.ten {
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-top: var(--border-top);
+  border-right: var(--border-right);
+  border-bottom: var(--border-bottom);
+  border-left: var(--border-left);
 }
 
 .one {
-  background: #fdfff4;
-  background-image: url('../img/1.png');
-  background-size: cover;
+  background: #fefff9;
+  background-image: url("../img/1.png");
 }
 
 .two {
-  background: #e1ff59;
-  background-image: url('../img/2.png');
-  background-size: cover;
+  background: #fff89a;
+  background-image: url("../img/2.png");
 }
 
 .three {
-  background: #afff1c;
-  background-image: url('../img/3.png');
-  background-size: cover;
+  background: #7fffb9;
+  background-image: url("../img/3.png");
 }
 
 .four {
-  background: #73ff6e;
-  background-image: url('../img/4.png');
-  background-size: cover;
+  background: #2afbff;
+  background-image: url("../img/4.png");
 }
 
 .five {
-  background: #2c9928;
-  background-image: url('../img/5.png');
-  background-size: cover;
+  background: #ffc9ff;
+  background-image: url("../img/5.png");
 }
 
 .six {
-  background: #ffc6ef;
-  background-image: url('../img/6.png');
-  background-size: cover;
+  background: #ff76d8;
+  background-image: url("../img/6.png");
 }
 
 .seven {
-  background: #ff81db;
-  background-image: url('../img/7.png');
-  background-size: cover;
+  background: #e955b0;
+  background-image: url("../img/7.png");
 }
 
 .eight {
-  background: #b049e0;
-  background-image: url('../img/8.png');
-  background-size: cover;
+  background: #cb52e9;
+  background-image: url("../img/8.png");
 }
 
 .nine {
-  background: #51158a;
-  background-image: url('../img/9.png');
-  background-size: cover;
+  background: #5d1e6d;
+  background-image: url("../img/9.png");
 }
 
 .ten {
-  background: #1a2b4d;
-  background-image: url('../img/10.png');
-  background-size: cover;
+  background: #162950;
+  background-image: url("../img/10.png");
 }
