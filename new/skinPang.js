@@ -1,4 +1,4 @@
-const blocks = ["one", "two"];
+const blocks = ["one", "two", "three"];
 
 // DOM
 const start = document.querySelector(".tetris_board>ul");
@@ -24,13 +24,13 @@ let aliveBlocks;
 
 let checking = false;
 
-const move_item1 = {
+let move_item1 = {
   type: "a", //블록 타입
   location_top: 0, //블록의 위치 x값 0~9
   location_left: 3, //블록의 위치 y값 0~19
 };
 
-const move_item2 = {
+let move_item2 = {
   type: "a", //블록 타입
   location_top: 0, //블록의 위치 x값 0~9
   location_left: 4, //블록의 위치 y값 0~19
@@ -38,10 +38,12 @@ const move_item2 = {
 
 //functions
 function init() {
-  // 0, 1번째 요소를 제외한 나머지 요소 삭제
-  blocks.splice(2);
+  // 0, 1, 2번째 요소를 제외한 나머지 요소 삭제
+  blocks.splice(3);
 
   score = 0;
+
+  scoreDisplay.innerText = score;
 
   //가장 최초의 무브 아이템 내용으로 temp_block 채워줌
   temp_block1 = { ...move_item1 };
@@ -307,6 +309,51 @@ function seizeBlock(block) {
   }
 }
 
+//좌우 블럭 값 서로 바꾸기용
+function changeBlock() {
+  const {
+    type: type_1,
+    location_top: top_1,
+    location_left: left_1,
+  } = temp_block1;
+  const {
+    type: type_2,
+    location_top: top_2,
+    location_left: left_2,
+  } = temp_block2;
+
+  const target1 = start.childNodes[top_1]
+    ? start.childNodes[top_1].childNodes[0].childNodes[left_1]
+    : null;
+
+  const target2 = start.childNodes[top_2]
+    ? start.childNodes[top_2].childNodes[0].childNodes[left_2]
+    : null;
+
+  //이동 효과를 주기 위해 이동 전 블록의 클랙스를 지움
+  const movingBlocks = document.querySelectorAll(".moving");
+  movingBlocks.forEach((moveing) => {
+    moveing.classList.remove(type_1, type_2, "moving");
+  });
+
+  if (target1 && target2) {
+    target1.classList.add(type_2, "moving");
+    target2.classList.add(type_1, "moving");
+
+    move_item1.location_left = left_2;
+    move_item1.location_top = top_2;
+
+    move_item2.location_left = left_1;
+    move_item2.location_top = top_1;
+
+    temp_block1.location_left = left_2;
+    temp_block1.location_top = top_2;
+
+    temp_block2.location_left = left_1;
+    temp_block2.location_top = top_1;
+  }
+}
+
 function sleep(ms) {
   const wakeUpTime = Date.now() + ms;
   while (Date.now() < wakeUpTime) {}
@@ -330,6 +377,12 @@ function check_match() {
     ) {
       //현재 위치 = i 행의 j 번째 요소
       let el = childes[i].querySelectorAll("li > ul > li")[j];
+
+      if (el.classList.value.indexOf("ten") > 0) {
+        //만약 최종단계라면 건너뛰기
+        continue;
+      }
+
       //만약 현재요소의 클래스에 seized가 있으면
       if (el.classList.value.indexOf("seized") > 0) {
         let nowClassList = el.classList;
@@ -437,6 +490,8 @@ function nextClassLevel(className) {
 
 function showGameOverText() {
   gameEnd.style.display = "block";
+
+  document.querySelector(".end-score").innerText = score + "코인 적립";
 }
 
 // 새로운 블럭 만드는 메서드
@@ -500,10 +555,12 @@ document.addEventListener("keydown", (e) => {
       moveBlock("location_left", 1);
       break;
     }
-    // case 38: {
-    //   moveDirection();
-    //   break;
-    // }
+    case 38: {
+      if (aliveBlocks === "all") {
+        changeBlock();
+      }
+      break;
+    }
     case 40: {
       moveBlock("location_top", 1);
       break;
